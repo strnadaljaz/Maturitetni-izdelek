@@ -17,29 +17,29 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $result = $stmt->get_result();
     $usernameExists = $result->num_rows > 0;
 
-    $check_username = checkUsername($username);
+    $username_valid = usernameValid($username);
+    $password_valid = passwordValid($password, $confirm_password);
 
-    if (!$usernameExists && $password == $confirm_password && $check_username == "") {
-        // Hash the password for security
+    if ($usernameExists)
+        $error = "Username is taken!";
+    elseif ($username_valid != "")
+        $error = $username_valid;
+    elseif ($password_valid != "")
+        $error = $password_valid;
+    else {
+        // Hash the password
         $password_hashed = password_hash($password, PASSWORD_DEFAULT);
         
-        // Prepare and execute the query to insert the plain username and hashed password
+        // Enter data into database
         $query = $con->prepare("INSERT INTO users (username, user_password) VALUES (?, ?)");
         $query->bind_param("ss", $username, $password_hashed);
         $query->execute();
 
+        // Throw a message that registration was successful
+        echo "<script type='text/javascript'>alert('Registration was successful');</script>";
+        
         header("Location: login.php");
         exit;
-    } else {
-        if ($usernameExists) {
-            $error = "Username is taken!";
-        } elseif ($password != $confirm_password) {
-            $error = "Passwords do not match.";
-        } elseif ($check_username != "") {
-            $error = $check_username;
-        } else {
-            $error = "Please enter some valid information.";
-        }
     }
 }
 ?>
@@ -56,11 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <div class="wrapper">
         <form action="" method="POST">
             <h2>REGISTER</h2>
-            <?php
-            if ($error) {
-                echo "<p style='color: red;'>$error</p>";
-            }
-            ?>
             <div class="input-field">
                 <input name="username" id="username" type="text" required>
                 <label>Create your username</label>
@@ -74,6 +69,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 <label>Confirm your password</label>
             </div>
             <button type="submit">Register</button>
+            <?php
+            if ($error) {
+                echo "<p style='color: red;'>$error</p>";
+            }
+            ?>
             <div class="login">
                 <p>Already have an account? <a href="login.php">Login</a></p>
             </div>

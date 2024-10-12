@@ -46,11 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     <div class="wrapper">
         <form action="" method="POST">
             <h2>LOGIN</h2>
-            <?php
-            if ($error) {
-                echo "<p style='color: red;'>$error</p>";
-            }
-            ?>
             <div class="input-field">
                 <input name="username" id="username" type="text" required>
                 <label>Enter your username</label>
@@ -60,6 +55,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 <label>Enter your password</label>
             </div>
             <button type="submit">Log in</button>
+            <?php
+            if ($error) {
+                echo "<p style='color: red;'>$error</p>";
+            }
+            ?>
             <div class="register">
                 <p>Don't have an account? <a href="register.php">Register</a></p>
             </div>
