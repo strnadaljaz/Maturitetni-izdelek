@@ -39,30 +39,31 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notes Login</title>
+    <title>Login page</title>
     <link rel="stylesheet" href="login_style.css">
 </head>
 <body>
-    <div id="container">
-        <div id="login_div">
-            <h1>LOGIN</h1>
+    <div class="wrapper">
+        <form action="" method="POST">
+            <h2>LOGIN</h2>
             <?php
             if ($error) {
                 echo "<p style='color: red;'>$error</p>";
             }
             ?>
-            <form action="" method="POST">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" placeholder="Enter username" required>
-                
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Enter password" required>
-                
-                <button id="login_submit" type="submit">Submit</button>
-                <label for="sign_up_link">Don't have an account?</label>
-                <a href="sign_up.php">Click here to sign up</a>
-            </form>
-        </div>
+            <div class="input-field">
+                <input name="username" id="username" type="text" required>
+                <label>Enter your username</label>
+            </div>
+            <div class="input-field">
+                <input name="password" id="password" type="password" required>
+                <label>Enter your password</label>
+            </div>
+            <button type="submit">Log in</button>
+            <div class="register">
+                <p>Don't have an account? <a href="sign_up.php">Register</a></p>
+            </div>
+        </form>
     </div>
 </body>
 </html>

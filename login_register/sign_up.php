@@ -49,33 +49,36 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-do Sign Up</title>
+    <title>Register page</title>
     <link rel="stylesheet" href="sign_up_style.css">
 </head>
 <body>
-    <div id="container">
-        <div id="sign_up_div">
-            <h1>SIGN UP</h1>
+    <div class="wrapper">
+        <form action="" method="POST">
+            <h2>REGISTER</h2>
             <?php
             if ($error) {
                 echo "<p style='color: red;'>$error</p>";
             }
             ?>
-            <form action="" method="POST">
-                <label>Username:</label>
-                <input type="text" id="username" name="username" placeholder="Enter your username" required>
-
-                <label>Password:</label>
-                <input type="password" id="password" name="password" placeholder="Enter password" required>
-
-                <label>Confirm password:</label>
-                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
-
-                <button id="sign_up_submit" type="submit">Submit</button>
-                <label for="login_link">Already have an account?</label>
-                <a href="login.php">Click here to login</a>
-            </form>
-        </div>
+            <div class="input-field">
+                <input name="username" id="username" type="text" required>
+                <label>Create your username</label>
+            </div>
+            <div class="input-field">
+                <input name="password" id="password" type="password" required>
+                <label>Create your password</label>
+            </div>
+            <div class="input-field">
+                <input name="confirm_password" id="confirm_password" type="password" required>
+                <label>Confirm your password</label>
+            </div>
+            <button type="submit">Register</button>
+            <div class="login">
+                <p>Already have an account? <a href="login.php">Login</a></p>
+            </div>
+        </form>
     </div>
+
 </body>
 </html>
