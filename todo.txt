@@ -1,2 +1,3 @@
-Neke backgrounde za aplikacije treba narejit.
 Dodat komentarje.
+
+Registracija uspesna alert
