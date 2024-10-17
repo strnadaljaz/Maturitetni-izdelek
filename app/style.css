@@ -144,14 +144,10 @@ body {
     background-color: #d4ac0d; /* Temnejša rumena */
 }
 
-.checkbox:checked {
+.task-checkbox:checked + .task-text {
     text-decoration: line-through;
+    color: green;
 }
-
-/*#checkbox:checked,
-#task {
-    text-decoration: line-through;
-}*/
 
 @media (max-width: 768px) {
     .task-form {

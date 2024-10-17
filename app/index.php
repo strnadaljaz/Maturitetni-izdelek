@@ -96,12 +96,10 @@ if ($username) {
                 <ul class="task-list" id="task_list" aria-label="Task List">
                     <?php foreach ($tasks as $task): ?>
                         <li class="task-item">
-                            <label>
-                                <input type="checkbox" id="checkbox">
-                            </label>
-                            <span id="task"><?php echo htmlspecialchars($task); ?></span>
+                            <span class="task-text"><?php echo htmlspecialchars($task); ?></span>
                             <form action="" method="POST" class="delete-form">
                                 <input type="hidden" name="task" value="<?php echo htmlspecialchars($task); ?>">
+                                <input type="checkbox" class="task-checkbox" id="checkbox">
                                 <button type="submit" name="operation" value="del" class="delete-button">Delete</button>
                             </form>
                         </li>
@@ -110,18 +108,6 @@ if ($username) {
             </section>
         </main>
     </div>
-
-    <script>
-        const checkbox = document.getElementById("checkbox");
-        const textToCross = document.getElementById("task");
-        checkbox.addEventListener("change", function() {
-            if (this.checked) {
-                textToCross.style.textDecoration = "line-through";
-                textToCross.parentNode.style.color = 'green';
-            }
-            else
-                textToCross.style.textDecoration = "none";
-        });
-    </script>
 </body>
+<script src="script.js"></script>
 </html>
