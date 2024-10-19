@@ -39,11 +39,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt = $con->prepare("INSERT INTO tasks (task, user_id) VALUES (?, ?)");
             $stmt->bind_param("si", $task, $user_id);
             $stmt->execute();
+            // Redirect to avoid resubmition
+            header("Location: ".$_SERVER['PHP_SELF']);
+            exit();
         } 
         else if ($operation == "del" && !empty($task)) {
             $stmt = $con->prepare("DELETE FROM tasks WHERE task = ? AND user_id = ?");
             $stmt->bind_param("si", $task, $user_id);
             $stmt->execute();
+            // Redirect to avoid resubmition
+            header("Location: ".$_SERVER['PHP_SELF']);
+            exit();
         } 
         else {
             $error = "Invalid request!";

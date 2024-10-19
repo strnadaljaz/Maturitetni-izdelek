@@ -6,3 +6,4 @@ Ko page refresham se task pojavi se enkrat (dvojno)
 
 na telefonu beli rob zgoraj in spodaj
 
+Zapisat v bazo, ce je task ze done
