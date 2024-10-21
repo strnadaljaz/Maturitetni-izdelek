@@ -2,7 +2,7 @@ Dodat komentarje.
 
 Registracija uspesna alert
 
-Ko page refresham se task pojavi se enkrat (dvojno)
+Ko page refresham se task pojavi se enkrat (dvojno) -- reseno
 
 na telefonu beli rob zgoraj in spodaj
 
