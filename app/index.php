@@ -90,6 +90,7 @@ if ($username) {
 
         <main class="content-container">
             <section class="main-content">
+                <h1 class="welcome-message">Welcome back <?php echo $username?>!</h1>
                 <?php if ($error): ?>
                     <div class="error-message" role="alert"><?php echo $error; ?></div>
                 <?php endif; ?>
