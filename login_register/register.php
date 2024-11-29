@@ -15,12 +15,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $stmt->bind_param("s", $username); // Use plain username here
     $stmt->execute();
     $result = $stmt->get_result();
-    $usernameExists = $result->num_rows > 0;
+    $username_exists = $result->num_rows > 0;
 
     $username_valid = usernameValid($username);
     $password_valid = passwordValid($password, $confirm_password);
 
-    if ($usernameExists)
+    if ($username_exists)
         $error = "Username is taken!";
     elseif ($username_valid != "")
         $error = $username_valid;
@@ -70,9 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             </div>
             <button type="submit">Register</button>
             <?php
-            if ($error) {
-                echo "<p style='color: red;'>$error</p>";
-            }
+                if ($error) {
+                    echo "<p style='color: red;'>$error</p>";
+                }
             ?>
             <div class="login">
                 <p>Already have an account? <a href="login.php">Login</a></p>

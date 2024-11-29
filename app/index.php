@@ -36,12 +36,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user_id = $row['user_id'];
 
         if ($operation == "add" && !empty($task)) {
-            $stmt = $con->prepare("INSERT INTO tasks (task, user_id) VALUES (?, ?)");
-            $stmt->bind_param("si", $task, $user_id);
+            $stmt = $con->prepare("SELECT task FROM tasks WHERE task = ?");
+            $stmt->bind_param("s", $task);
             $stmt->execute();
-            // Redirect to avoid resubmition
-            header("Location: ".$_SERVER['PHP_SELF']);
-            exit();
+            $result = $stmt->get_result();
+            $task_exists = $result->num_rows > 0;
+
+            if ($task_exists) {
+                $error = "Task already exists";
+            }
+            else {
+                $stmt = $con->prepare("INSERT INTO tasks (task, user_id) VALUES (?, ?)");
+                $stmt->bind_param("si", $task, $user_id);
+                $stmt->execute();
+                // Redirect to avoid resubmition
+                header(header: "Location: ".$_SERVER['PHP_SELF']);
+                exit();
+            }
         } 
         else if ($operation == "del" && !empty($task)) {
             $stmt = $con->prepare("DELETE FROM tasks WHERE task = ? AND user_id = ?");

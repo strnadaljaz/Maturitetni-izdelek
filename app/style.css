@@ -17,7 +17,7 @@ html, body {
 
 body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #2a2d72, #5a0d85); /* Novi gradient */
+    background: rgb(200, 200, 200);
     display: flex;
     flex-direction: column;
 }
@@ -58,7 +58,7 @@ body {
 }
 
 .welcome-message {
-    color: black;
+    color: white;
 }
 
 .logout-form {
@@ -91,7 +91,7 @@ body {
 }
 
 .main-content {
-    background: #ffffff; /* White background for main content */
+    background: #1e1c50; 
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 100%;
