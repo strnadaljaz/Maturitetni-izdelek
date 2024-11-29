@@ -36,8 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $query->execute();
 
         // Throw a message that registration was successful
-        echo "<script type='text/javascript'>alert('Registration was successful');</script>";
-        
+        $_SESSION['reg_success'] = True;
+
         header("Location: login.php");
         exit;
     }

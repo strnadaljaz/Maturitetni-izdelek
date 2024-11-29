@@ -3,6 +3,12 @@ session_start();
 include_once("connection.php");
 include_once("functions.php");
 
+// Če je uporabnik se ravnokar registriral, izpišemo opozorilo
+if (isset($_SESSION['reg_success'])) {
+    echo "<script type='text/javascript'>alert('Registration was successful');</script>";
+    unset($_SESSION['reg_success']);
+}
+
 // Handle form submission
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
