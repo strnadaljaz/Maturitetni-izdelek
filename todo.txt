@@ -1,3 +1,9 @@
 Dodat komentarje.
 
 Registracija uspesna alert
+
+==== Ko page refresham se task pojavi se enkrat (dvojno)
+
+Zapisat v bazo, ce je task ze done
+
+==== ce mata dva taska isto ime, se oba zbriseta -> onemogocimo, da imata dva taska enako ime
