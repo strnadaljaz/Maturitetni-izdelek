@@ -3,7 +3,7 @@ document.querySelectorAll(".task-checkbox").forEach(function(checkbox) {
         const taskText = this.closest(".task-item").querySelector(".task-text");
         if (this.checked) {
             taskText.style.textDecoration = "line-through";
-            taskText.style.color = "green";
+            taskText.style.color = "#1e1c50";
         } else {
             taskText.style.textDecoration = "none";
             taskText.style.color = "initial";

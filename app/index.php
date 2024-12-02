@@ -111,13 +111,17 @@ if ($username) {
                     <button type="submit" name="operation" value="add" class="add-button">Add Task</button>
                 </form>
 
+                <div class="white-line"></div>
+
                 <ul class="task-list" id="task_list" aria-label="Task List">
                     <?php foreach ($tasks as $task): ?>
                         <li class="task-item">
-                            <span class="task-text"><?php echo htmlspecialchars($task); ?></span>
+                            <div class="task-left">
+                                <input type="checkbox" class="task-checkbox" id="checkbox">
+                                <span class="task-text"><?php echo htmlspecialchars($task); ?></span>
+                            </div>
                             <form action="" method="POST" class="delete-form">
                                 <input type="hidden" name="task" value="<?php echo htmlspecialchars($task); ?>">
-                                <input type="checkbox" class="task-checkbox" id="checkbox">
                                 <button type="submit" name="operation" value="del" class="delete-button">Delete</button>
                             </form>
                         </li>
