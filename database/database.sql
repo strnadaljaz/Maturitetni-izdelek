@@ -12,6 +12,7 @@ CREATE TABLE tasks (
     task_id INT AUTO_INCREMENT,
     task TEXT,
     user_id INT,
+    task_done BOOLEAN DEFAULT 0,
     PRIMARY KEY (task_id),
     FOREIGN KEY FK_TASKS_USERS (user_id) REFERENCES users(user_id)
 );

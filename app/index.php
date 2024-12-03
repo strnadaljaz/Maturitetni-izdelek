@@ -14,15 +14,14 @@ $username = $_SESSION['username'] ?? null;
 $error = '';
 $tasks = [];
 
-// Handle logout
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
-    session_destroy();
-    header("Location: ../login_register/login.php"); // Redirect to the login page after logout
-    exit();
-}
-
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['logout'])) {
+        session_destroy();
+        header("Location: ../login_register/login.php"); // Redirect to the login page after logout
+        exit();
+    }
+
     if (isset($_POST["operation"])) {
         $operation = $_POST["operation"];
         $task = $_POST["task"] ?? '';
@@ -78,6 +77,19 @@ if ($username) {
         $tasks[] = $row['task'];
     }
 }
+
+if (isset($_POST['checkbox'])) {
+    // Checkbox is checked
+    $stmt = $con->prepare("UPDATE tasks SET task_done = 1 WHERE user_id = (SELECT user_id FROM users WHERE username = ?)");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+}
+else {
+    // Checkbox i unchecked
+    $stmt = $con->prepare("UPDATE tasks SET task_done = 0 WHERE user_id = (SELECT user_id FROM users WHERE username = ?)");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+}
 ?>
 
 <!DOCTYPE html>
@@ -117,7 +129,7 @@ if ($username) {
                     <?php foreach ($tasks as $task): ?>
                         <li class="task-item">
                             <div class="task-left">
-                                <input type="checkbox" class="task-checkbox" id="checkbox">
+                                <input type="checkbox" class="task-checkbox" id="checkbox" name="checkbox">
                                 <span class="task-text"><?php echo htmlspecialchars($task); ?></span>
                             </div>
                             <form action="" method="POST" class="delete-form">
