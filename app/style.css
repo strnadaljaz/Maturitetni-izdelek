@@ -66,18 +66,17 @@ body {
 }
 
 .logout-button {
-    background-color: #e74c3c; /* Red for logout button */
+    background-color: #ff5945; /* Red for logout button */
     color: #fff;
     border: none;
-    border-radius: 4px;
+    border-radius: 10px;
     padding: 10px 20px;
-    font-size: 14px;
+    font-size: 15px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
 .logout-button:hover {
-    background-color: #c0392b; /* Darker red on hover */
+    filter: brightness(0.8); /* Darker on hover */
 }
 
 .content-container {
@@ -100,6 +99,10 @@ body {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+}
+
+.username {
+    text-decoration: underline;
 }
 
 .error-message {
@@ -139,40 +142,48 @@ body {
     filter: brightness(0.8); /* Darker on hover */
 }
 
+.white-line {
+    height: 2px;
+    background-color: white;
+    width: 100%;
+    opacity: 1;
+    margin-top: -15px;
+}
+
 .task-list {
-    list-style: none; /* Remove bullet points */
+    list-style: none; 
     padding: 0;
 }
 
 .task-item {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f7f9fa; /* Light gray background for tasks */
+    justify-content: space-between; /* Razporedi elemente na skrajne strani */
+    align-items: center; /* Poravnava po vertikali */
+    background-color: #f7f9fa;
+    margin-bottom: 20px;
     padding: 12px 8px;
-    margin-top: 5px;
-    border-radius: 4px;
+    border-radius: 8px;
     border: 1px solid #e0e0e0;
-    position: relative; /* For absolute positioning of delete button */
 }
 
-.delete-form {
-    margin: 0;
+.task-left {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Razmik med checkboxom in tekstom */
 }
 
-.delete-button {
-    background-color: #f1c40f; /* Yellow for delete button */
+.task-text {
+    font-size: 18px;
     color: #333;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 12px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    position: static; /* Odstrani absolutno pozicioniranje */
+    margin: 0; /* Poskrbi, da ni dodatnega zamika */
 }
 
-.delete-button:hover {
-    background-color: #d4ac0d; /* Darker yellow on hover */
+
+.task-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
 }
 
 .task-checkbox:checked + .task-text {
@@ -180,25 +191,20 @@ body {
     color: green; /* Change color for completed tasks */
 }
 
-span {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #555; /* Color for delete button */
-    font-size: 18px;
-    transition: all 0.2s ease;
+.delete-button {
+    background-color: #ff5945;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin-left: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-span:hover {
-    background-color: #c9c9c9; /* Background color on hover */
-    color: #fff; /* Text color on hover */
+.delete-button:hover {
+    filter: brightness(0.8);
 }
 
 /* Media queries for responsive design */

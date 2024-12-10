@@ -1,81 +1,68 @@
 <?php
 session_start();
-// Include the connection
 include_once("../login_register/connection.php");
 
 // Check if user is logged in
-// If there is no user logged in, redirect him to the login page
 if (!isset($_SESSION['username'])) {
     header("Location: ../login_register/login.php");
     exit();
 }
 
-$username = $_SESSION['username'] ?? null;
-$error = '';
+$username = $_SESSION['username'];
 $tasks = [];
+$error = '';
 
-// Handle logout
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
-    session_destroy();
-    header("Location: ../login_register/login.php"); // Redirect to the login page after logout
-    exit();
-}
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    if (isset($_POST['logout'])) {
+        session_destroy();
+        header("Location: ../login_register/login.php");
+        exit();
+    }
 
-// Handle form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST["operation"])) {
         $operation = $_POST["operation"];
         $task = $_POST["task"] ?? '';
 
-        // Get the user id
+        // Get the user ID
         $stmt = $con->prepare("SELECT user_id FROM users WHERE username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        $user_id = $row['user_id'];
+        $user_id = $result->fetch_assoc()['user_id'];
 
-        if ($operation == "add" && !empty($task)) {
-            $stmt = $con->prepare("SELECT task FROM tasks WHERE task = ?");
-            $stmt->bind_param("s", $task);
+        if ($operation === "add" && !empty($task)) {
+            $stmt = $con->prepare("SELECT task FROM tasks WHERE task = ? AND user_id = ?");
+            $stmt->bind_param("si", $task, $user_id);
             $stmt->execute();
-            $result = $stmt->get_result();
-            $task_exists = $result->num_rows > 0;
+            $task_exists = $stmt->get_result()->num_rows > 0;
 
             if ($task_exists) {
-                $error = "Task already exists";
-            }
-            else {
+                $error = "Task already exists.";
+            } else {
                 $stmt = $con->prepare("INSERT INTO tasks (task, user_id) VALUES (?, ?)");
                 $stmt->bind_param("si", $task, $user_id);
                 $stmt->execute();
-                // Redirect to avoid resubmition
-                header(header: "Location: ".$_SERVER['PHP_SELF']);
+                header("Location: " . $_SERVER['PHP_SELF']);
                 exit();
             }
-        } 
-        else if ($operation == "del" && !empty($task)) {
+        } elseif ($operation === "del" && !empty($task)) {
             $stmt = $con->prepare("DELETE FROM tasks WHERE task = ? AND user_id = ?");
             $stmt->bind_param("si", $task, $user_id);
             $stmt->execute();
-            // Redirect to avoid resubmition
-            header("Location: ".$_SERVER['PHP_SELF']);
+            header("Location: " . $_SERVER['PHP_SELF']);
             exit();
-        } 
-        else {
-            $error = "Invalid request!";
         }
     }
 }
 
-// Load tasks at the start
+// Load tasks from the database
 if ($username) {
-    $stmt = $con->prepare("SELECT task FROM tasks WHERE user_id = (SELECT user_id FROM users WHERE username = ?)");
+    $stmt = $con->prepare("SELECT task, task_done FROM tasks WHERE user_id = (SELECT user_id FROM users WHERE username = ?)");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
     while ($row = $result->fetch_assoc()) {
-        $tasks[] = $row['task'];
+        $tasks[] = $row;
     }
 }
 ?>
@@ -85,7 +72,7 @@ if ($username) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToDo app</title>
+    <title>Task Manager</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -93,7 +80,7 @@ if ($username) {
         <header class="navbar">
             <div class="navbar-content">
                 <h1 class="navbar-brand">Task Manager</h1>
-                <form action="" method="POST" id="logout-form" class="logout-form">
+                <form action="" method="POST" class="logout-form">
                     <button type="submit" name="logout" class="logout-button">Logout</button>
                 </form>
             </div>
@@ -101,23 +88,34 @@ if ($username) {
 
         <main class="content-container">
             <section class="main-content">
-                <h1 class="welcome-message">Welcome back <?php echo $username?>!</h1>
+                <h1 class="welcome-message">Welcome back, <span class="username"><?php echo htmlspecialchars($username); ?></span>!</h1>
                 <?php if ($error): ?>
-                    <div class="error-message" role="alert"><?php echo $error; ?></div>
+                    <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
                 <?php endif; ?>
 
                 <form action="" method="POST" class="task-form">
-                    <input type="text" name="task" required placeholder="Enter a new task" aria-label="New Task" class="task-input">
+                    <input type="text" name="task" placeholder="Enter a new task" required class="task-input">
                     <button type="submit" name="operation" value="add" class="add-button">Add Task</button>
                 </form>
 
-                <ul class="task-list" id="task_list" aria-label="Task List">
+                <div class="white-line"></div>
+
+                <ul class="task-list">
                     <?php foreach ($tasks as $task): ?>
                         <li class="task-item">
-                            <span class="task-text"><?php echo htmlspecialchars($task); ?></span>
+                            <div class="task-left">
+                                <input 
+                                    type="checkbox" 
+                                    class="task-checkbox" 
+                                    <?php echo $task['task_done'] ? 'checked' : ''; ?>>
+                                <span 
+                                    class="task-text" 
+                                    style="<?php echo $task['task_done'] ? 'text-decoration: line-through; color: #1e1c50;' : ''; ?>">
+                                    <?php echo htmlspecialchars($task['task']); ?>
+                                </span>
+                            </div>
                             <form action="" method="POST" class="delete-form">
-                                <input type="hidden" name="task" value="<?php echo htmlspecialchars($task); ?>">
-                                <input type="checkbox" class="task-checkbox" id="checkbox">
+                                <input type="hidden" name="task" value="<?php echo htmlspecialchars($task['task']); ?>">
                                 <button type="submit" name="operation" value="del" class="delete-button">Delete</button>
                             </form>
                         </li>
@@ -126,6 +124,6 @@ if ($username) {
             </section>
         </main>
     </div>
+    <script src="script.js"></script>
 </body>
-<script src="script.js"></script>
 </html>

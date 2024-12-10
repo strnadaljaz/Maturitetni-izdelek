@@ -9,6 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
+    $email = $_POST['email'];
 
     // Check if username exists
     $stmt = $con->prepare("SELECT username FROM users WHERE username = ?");
@@ -17,11 +18,20 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $result = $stmt->get_result();
     $username_exists = $result->num_rows > 0;
 
+    // Check if the email exists
+    $stmt = $con->prepare("SELECT email FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $email_exists = $result->num_rows > 0;
+
     $username_valid = usernameValid($username);
     $password_valid = passwordValid($password, $confirm_password);
 
     if ($username_exists)
         $error = "Username is taken!";
+    else if ($email_exists)
+        $error = "Email is taken!";
     elseif ($username_valid != "")
         $error = $username_valid;
     elseif ($password_valid != "")
@@ -31,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $password_hashed = password_hash($password, PASSWORD_DEFAULT);
         
         // Enter data into database
-        $query = $con->prepare("INSERT INTO users (username, user_password) VALUES (?, ?)");
-        $query->bind_param("ss", $username, $password_hashed);
+        $query = $con->prepare("INSERT INTO users (username, email, user_password) VALUES (?, ?, ?)");
+        $query->bind_param("sss", $username, $email, $password_hashed);
         $query->execute();
 
         // Throw a message that registration was successful
@@ -59,6 +69,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             <div class="input-field">
                 <input name="username" id="username" type="text" required>
                 <label>Create your username</label>
+            </div>
+            <div class="input-field">
+                <input name="email" id="email" type="email" required>
+                <label>Enter your email</label>
             </div>
             <div class="input-field">
                 <input name="password" id="password" type="password" required>
