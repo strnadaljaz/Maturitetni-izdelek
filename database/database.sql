@@ -3,8 +3,9 @@ USE todo;
 
 CREATE TABLE users (
     user_id INT AUTO_INCREMENT,
-    username TEXT,
-    user_password TEXT,
+    username VARCHAR(255),
+    email VARCHAR(255),
+    user_password VARCHAR(255),
     PRIMARY KEY (user_id)
 );
 

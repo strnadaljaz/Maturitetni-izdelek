@@ -101,6 +101,10 @@ body {
     gap: 2rem;
 }
 
+.username {
+    text-decoration: underline;
+}
+
 .error-message {
     color: #e74c3c; /* Red for error messages */
     margin-bottom: 15px;
