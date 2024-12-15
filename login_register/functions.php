@@ -1,5 +1,10 @@
 <?php
 
+/*
+Funkcija za preverjanje uporabniškega imena
+    - ime ne sme biti numerično
+    - ime mora biti dolžine od 6 do 20 znakov
+*/
 function usernameValid ($username) 
 {
     if (is_numeric(value: $username))
@@ -12,6 +17,12 @@ function usernameValid ($username)
         return "";
 }
 
+/*
+Funkcija za preverjanje gesla
+    - geslo in potrditveno geslo morata biti enaki
+    - geslo ne sme biti numerično
+    - geslo mora biti dolžine od 8 do 25 znakov
+*/
 function passwordValid ($password, $confirm_password)
 {
     if ($password != $confirm_password)

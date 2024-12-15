@@ -1,39 +1,44 @@
 <?php
+// PB -> Podatkovna Baza
 session_start();
-include_once("connection.php");
+include_once("connection.php"); // Za povezavo s PB
 include_once("functions.php");
 
-// Če je uporabnik se ravnokar registriral, izpišemo opozorilo
+// Če se je uporabnik ravnokar registriral, izpišem, da je bila registracija uspešna
 if (isset($_SESSION['reg_success'])) {
     echo "<script type='text/javascript'>alert('Registration was successful');</script>";
     unset($_SESSION['reg_success']);
 }
 
-// Handle form submission
+// Ob kliku na gumb Submit se izvede spodnja koda
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    // Pridobim uporabniško ime in geslo
     $username = $_POST['username'];
     $password = $_POST['password'];
 
     $_SESSION['username'] = $username;
 
-    // Prepare statement to check if the username exists
+    // Preverim, če uporabnik obstaja
     $stmt = $con->prepare("SELECT user_password FROM users WHERE username = ?");
     $stmt->bind_param("s", $username); // Use plain username here
     $stmt->execute();
-    
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
     
+    // Spodnja koda se izvede, če uporabnik obstaja
     if ($row) {
-        // Get the stored hashed password
+        // Pridobim geslo iz PB
         $password_hashed = $row['user_password'];
+        // Preverim, ali se vneseno geslo in geslo v PB ujemata
         if (password_verify($password, $password_hashed)) {
             header("Location: ../app/index.php");
             exit;
+        // Če se gesli ne ujemata, izpišem opozorilo
         } else {
             $error = "Wrong password!";
         }
+    // Če uporabniškega imena ni v PB, izpišem opozorilo
     } else {
         $error = "Username doesn't exist!";
     }
@@ -62,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             </div>
             <button type="submit">Log in</button>
             <?php
+            // Izpišem napako
             if ($error) {
                 echo "<p style='color: red;'>$error</p>";
             }

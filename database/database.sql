@@ -1,5 +1,4 @@
-CREATE DATABASE todo;
-USE todo;
+USE taskfall_todo;
 
 CREATE TABLE users (
     user_id INT AUTO_INCREMENT,

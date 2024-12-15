@@ -10,7 +10,7 @@ Dodat komentarje.
 
 Preglej: SendGrid za posiljanje emailov ali PHPMailer
 
-novo ime: TaskFall
+==== novo ime: TaskFall
 
 logotip?
 
