@@ -72,14 +72,14 @@ if ($username) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Manager</title>
+    <title>TaskFall</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="app-container">
         <header class="navbar">
             <div class="navbar-content">
-                <h1 class="navbar-brand">Task Manager</h1>
+                <h1 class="navbar-brand">TaskFall</h1>
                 <form action="" method="POST" class="logout-form">
                     <button type="submit" name="logout" class="logout-button">Logout</button>
                 </form>
