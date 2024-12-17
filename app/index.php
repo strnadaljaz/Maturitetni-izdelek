@@ -108,6 +108,7 @@ if ($username) {
                                     type="checkbox" 
                                     class="task-checkbox" 
                                     <?php echo $task['task_done'] ? 'checked' : ''; ?>>
+                                <img class="calendar-icon" src="../pictures/calendar.png" alt="Calendar icon" width="25" height="25">
                                 <span 
                                     class="task-text" 
                                     style="<?php echo $task['task_done'] ? 'text-decoration: line-through; color: #1e1c50;' : ''; ?>">

@@ -5,9 +5,9 @@ Funkcija za preverjanje uporabniškega imena
     - ime ne sme biti numerično
     - ime mora biti dolžine od 6 do 20 znakov
 */
-function usernameValid ($username) 
+function usernameValid ($username)
 {
-    if (is_numeric(value: $username))
+    if (is_numeric($username))
         return "Username can't be numeric!";
 
     elseif (strlen($username) < 6 || strlen($username) > 20)

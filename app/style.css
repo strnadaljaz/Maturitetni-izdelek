@@ -191,6 +191,10 @@ body {
     color: green; /* Change color for completed tasks */
 }
 
+.calendar-icon {
+    cursor: pointer;
+}
+
 .delete-button {
     background-color: #ff5945;
     color: white;
