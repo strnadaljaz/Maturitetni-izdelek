@@ -33,3 +33,18 @@ document.querySelectorAll(".task-checkbox").forEach(function(checkbox) {
           });
     });
 });
+
+/*document.querySelectorAll(".calendar-icon").forEach(function(calendarIcon) {
+    calendarIcon.addEventListener("click", function() {
+        var dateTimeInput = this.closest(".task-item").querySelector("input[type='datetime-local']");
+
+        if (dateTimeInput.style.display === "none" || dateTimeInput.style.display === "") {
+            dateTimeInput.style.display = "block";  
+            dateTimeInput.focus(); 
+        } 
+        else {
+            dateTimeInput.style.display = "none"; 
+        }
+    });
+});
+*/

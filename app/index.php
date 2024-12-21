@@ -22,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (isset($_POST["operation"])) {
         $operation = $_POST["operation"];
         $task = $_POST["task"] ?? '';
+        $deadline = $_POST["deadline"] ?? '';
 
         // Get the user ID
         $stmt = $con->prepare("SELECT user_id FROM users WHERE username = ?");
@@ -35,12 +36,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->bind_param("si", $task, $user_id);
             $stmt->execute();
             $task_exists = $stmt->get_result()->num_rows > 0;
-
+        
             if ($task_exists) {
                 $error = "Task already exists.";
             } else {
-                $stmt = $con->prepare("INSERT INTO tasks (task, user_id) VALUES (?, ?)");
-                $stmt->bind_param("si", $task, $user_id);
+                if ($deadline !== '') {
+                    $formatted_deadline = date('Y-m-d H:i:s', strtotime($deadline));
+        
+                    $stmt = $con->prepare("INSERT INTO tasks (task, deadline, user_id) VALUES (?, ?, ?)");
+                    $stmt->bind_param("ssi", $task, $formatted_deadline, $user_id);
+                } else {
+                    $stmt = $con->prepare("INSERT INTO tasks (task, user_id) VALUES (?, ?)");
+                    $stmt->bind_param("si", $task, $user_id);
+                }
+        
                 $stmt->execute();
                 header("Location: " . $_SERVER['PHP_SELF']);
                 exit();
@@ -92,10 +101,13 @@ if ($username) {
                 <?php if ($error): ?>
                     <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
                 <?php endif; ?>
-
+                        
                 <form action="" method="POST" class="task-form">
-                    <input type="text" name="task" placeholder="Enter a new task" required class="task-input">
-                    <button type="submit" name="operation" value="add" class="add-button">Add Task</button>
+                    <div class="task-div">
+                        <input type="text" name="task" placeholder="Enter a new task" required class="task-input">
+                        <button type="submit" name="operation" value="add" class="add-button">Add Task</button>
+                    </div>
+                    <input type="datetime-local" name="deadline" id="deadline">
                 </form>
 
                 <div class="white-line"></div>
@@ -108,7 +120,6 @@ if ($username) {
                                     type="checkbox" 
                                     class="task-checkbox" 
                                     <?php echo $task['task_done'] ? 'checked' : ''; ?>>
-                                <img class="calendar-icon" src="../pictures/calendar.png" alt="Calendar icon" width="25" height="25">
                                 <span 
                                     class="task-text" 
                                     style="<?php echo $task['task_done'] ? 'text-decoration: line-through; color: #1e1c50;' : ''; ?>">
