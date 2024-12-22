@@ -66,7 +66,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 // Load tasks from the database
 if ($username) {
-    $stmt = $con->prepare("SELECT task, task_done FROM tasks WHERE user_id = (SELECT user_id FROM users WHERE username = ?)");
+    $stmt = $con->prepare("SELECT task, task_done, deadline 
+                                  FROM tasks WHERE user_id = 
+                                  (SELECT user_id FROM users WHERE username = ?)");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -103,7 +105,7 @@ if ($username) {
                 <?php endif; ?>
                         
                 <form action="" method="POST" class="task-form">
-                    <div class="task-div">
+                    <div class="task-input-div">
                         <input type="text" name="task" placeholder="Enter a new task" required class="task-input">
                         <button type="submit" name="operation" value="add" class="add-button">Add Task</button>
                     </div>
@@ -120,11 +122,20 @@ if ($username) {
                                     type="checkbox" 
                                     class="task-checkbox" 
                                     <?php echo $task['task_done'] ? 'checked' : ''; ?>>
-                                <span 
-                                    class="task-text" 
-                                    style="<?php echo $task['task_done'] ? 'text-decoration: line-through; color: #1e1c50;' : ''; ?>">
-                                    <?php echo htmlspecialchars($task['task']); ?>
-                                </span>
+                                <div class="task-div">
+                                    <span 
+                                        class="task-text" 
+                                        style="<?php echo $task['task_done'] ? 'text-decoration: line-through; color: #1e1c50;' : ''; ?>">
+                                        <?php echo htmlspecialchars($task['task']); ?>
+                                    </span>
+                                    <label for="deadline" class="deadline-label">
+                                        <?php 
+                                            if (!empty($task['deadline'])) {
+                                                echo date('d. m. Y, H:i', strtotime($task['deadline']));
+                                            }
+                                        ?>
+                                    </label>
+                                </div>
                             </div>
                             <form action="" method="POST" class="delete-form">
                                 <input type="hidden" name="task" value="<?php echo htmlspecialchars($task['task']); ?>">

@@ -116,7 +116,7 @@ body {
     margin-bottom: -40px;
 }
 
-.task-div {
+.task-input-div {
     display: flex;
 }
 
@@ -201,11 +201,21 @@ body {
     gap: 20px;
 }
 
+.task-div {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
 .task-text {
     font-size: 18px;
     color: #333;
     position: static;
     margin: 0;
+}
+
+.deadline-label {
+    font-size: 10px;
 }
 
 .task-checkbox {
@@ -240,12 +250,7 @@ body {
 }
 
 @media screen and (max-width: 768px) {
-    .task-form {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .task-div {
+    .task-form, .task-input-div {
         flex-direction: column;
         align-items: stretch;
     }
